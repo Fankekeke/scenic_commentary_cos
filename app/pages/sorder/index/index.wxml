@@ -1,0 +1,72 @@
+<!-- 状态栏区域 -->
+<view class="cu-custom" style="height:{{CustomBar}}px;">
+    <view class="cu-bar fixed none-bg text-white bg-img" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
+        <navigator class='action canui-head-title' open-type="navigateBack" hover-class="none">
+            <text class='icon-back'></text>
+            我的预约
+        </navigator>
+    </view>
+</view>
+
+<view class="order-page" style="padding-top: {{CustomBar}}px;">
+    <view wx:if="{{!isLogin}}" class="login-tip">
+        <view class="login-tip-title">请先登录</view>
+        <view class="login-tip-desc">登录后即可查看您的景区预约订单</view>
+        <button class="cu-btn round bg-blue login-btn" bindtap="goLogin">去登录</button>
+    </view>
+
+    <block wx:else>
+        <scroll-view class="status-tabs" scroll-x>
+            <view wx:for="{{tabs}}" wx:key="id" class="status-tab {{activeTab === item.id ? 'active' : ''}}" bindtap="onTabTap" data-status="{{item.id}}">
+                {{item.name}}
+            </view>
+        </scroll-view>
+
+        <view wx:if="{{loading}}" class="order-empty">正在加载订单...</view>
+        <view wx:elif="{{orderList.length === 0}}" class="order-empty">暂无相关订单</view>
+
+        <view class="order-list">
+            <view class="order-card" wx:for="{{orderList}}" wx:key="id" bindtap="openDetail" data-id="{{item.id}}">
+                <view class="order-card-head">
+                    <text class="order-spot-name">{{item.spotName || '景区'}}</text>
+                    <text class="order-status {{item.statusClass}}">{{item.statusName}}</text>
+                </view>
+                <view class="order-spot">
+                    <image wx:if="{{item.cover}}" class="order-cover" src="{{item.cover}}" mode="aspectFill"></image>
+                    <view wx:else class="order-cover order-cover-empty">景区</view>
+                    <view class="order-spot-info">
+                        <view class="order-address">{{item.spotAddress || '暂无地址'}}</view>
+                        <view class="order-hours">开放时间：{{item.spotOpeningHours || '暂无'}}</view>
+                        <view class="order-category">{{item.categoryName || '景区'}}</view>
+                    </view>
+                </view>
+                <view class="order-detail">
+                    <view class="order-row">
+                        <text>预约单号</text>
+                        <text>{{item.reservationNo}}</text>
+                    </view>
+                    <view class="order-row">
+                        <text>游览时间</text>
+                        <text>{{item.visitDate}} {{item.visitTimeSlot}}</text>
+                    </view>
+                    <view class="order-row">
+                        <text>预约人数</text>
+                        <text>{{item.visitorCount}} 人</text>
+                    </view>
+                    <view class="order-row">
+                        <text>联系人</text>
+                        <text>{{item.contactName}} {{item.contactMobile}}</text>
+                    </view>
+                    <view wx:if="{{item.remark}}" class="order-row">
+                        <text>备注</text>
+                        <text>{{item.remark}}</text>
+                    </view>
+                </view>
+                <view class="order-card-foot">
+                    <text class="order-time">{{item.createdAt}}</text>
+                    <button wx:if="{{item.canCancel}}" class="order-cancel" catchtap="cancelOrder" data-id="{{item.id}}">取消预约</button>
+                </view>
+            </view>
+        </view>
+    </block>
+</view>

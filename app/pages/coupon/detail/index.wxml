@@ -1,0 +1,28 @@
+<!-- 状态栏区域 -->
+<view class="cu-custom" style="height:{{CustomBar}}px;">
+    <view class="cu-bar fixed none-bg text-white bg-img" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
+        <navigator class='action canui-head-title' open-type="navigateBack" hover-class="none">
+            <text class='icon-back'></text>
+            公告详情
+        </navigator>
+    </view>
+</view>
+
+<view class="bulletin-detail" style="padding-top: {{CustomBar}}px;">
+    <view wx:if="{{loading}}" class="bulletin-empty">正在加载公告...</view>
+    <block wx:elif="{{bulletin}}">
+        <view class="detail-card">
+            <view class="detail-tag">{{bulletin.typeName}}</view>
+            <view class="detail-title">{{bulletin.title}}</view>
+            <view class="detail-meta">
+                <text>{{bulletin.publisherName}}</text>
+                <text>{{bulletin.createDate}}</text>
+            </view>
+            <view class="detail-content">{{bulletin.content}}</view>
+            <view wx:if="{{imagesList.length}}" class="detail-images">
+                <image wx:for="{{imagesList}}" wx:key="*this" class="detail-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}"></image>
+            </view>
+        </view>
+    </block>
+    <view wx:else class="bulletin-empty">公告不存在或已下架</view>
+</view>

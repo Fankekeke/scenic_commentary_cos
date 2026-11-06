@@ -1,0 +1,34 @@
+<!-- 状态栏区域 -->
+<view class="cu-custom" style="height:{{CustomBar}}px;">
+    <view class="cu-bar fixed none-bg text-white bg-img" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
+        <navigator class='action canui-head-title' open-type="navigateBack" hover-class="none">
+            <text class='icon-back'></text>
+            景区公告
+        </navigator>
+    </view>
+</view>
+
+<view class="bulletin-page" style="padding-top: {{CustomBar}}px;">
+    <view class="bulletin-header">
+        <view class="bulletin-header-title">最新公告</view>
+        <view class="bulletin-header-sub">景区动态与出行提示</view>
+    </view>
+
+    <view wx:if="{{loading}}" class="bulletin-empty">正在加载公告...</view>
+    <view wx:elif="{{isEmpty}}" class="bulletin-empty">暂无公告</view>
+
+    <view class="bulletin-list">
+        <view class="bulletin-card" wx:for="{{bulletinList}}" wx:key="id" bindtap="bulletinDetail" data-id="{{item.id}}">
+            <view class="bulletin-card-top">
+                <text class="bulletin-tag">{{item.typeName}}</text>
+                <text class="bulletin-card-title">{{item.title}}</text>
+            </view>
+            <view class="bulletin-summary">{{item.content}}</view>
+            <image wx:if="{{item.cover}}" class="bulletin-cover" src="{{item.cover}}" mode="aspectFill"></image>
+            <view class="bulletin-meta">
+                <text>{{item.publisherName}}</text>
+                <text>{{item.dateText}}</text>
+            </view>
+        </view>
+    </view>
+</view>

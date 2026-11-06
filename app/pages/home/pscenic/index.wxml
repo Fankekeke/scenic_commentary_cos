@@ -1,0 +1,34 @@
+<!-- 状态栏区域 -->
+<view class="cu-custom" style="height:{{CustomBar}}px;">
+    <view class="cu-bar fixed none-bg text-white bg-img" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
+        <view class="action canui-head-title">AI 客服</view>
+    </view>
+</view>
+
+<view class="chat-page" style="padding-top: {{CustomBar}}px;">
+    <block wx:if="{{!isLogin}}">
+        <view class="chat-login">
+            <view class="chat-login-title">请先登录</view>
+            <view class="chat-login-desc">登录后即可查看与 AI 客服的沟通记录</view>
+            <button class="cu-btn round bg-blue chat-login-btn" bindtap="goLogin">去登录</button>
+        </view>
+    </block>
+
+    <block wx:else>
+        <scroll-view class="chat-scroll" scroll-y scroll-top="{{scrollTop}}" scroll-with-animation>
+            <view wx:if="{{messageList.length === 0}}" class="chat-empty">暂无沟通记录，开始提问吧</view>
+            <view wx:for="{{messageList}}" wx:key="id" class="chat-row {{item.role == 1 ? 'chat-row-mine' : 'chat-row-ai'}}">
+                <view class="chat-avatar">{{item.role == 1 ? '我' : 'AI'}}</view>
+                <view class="chat-bubble">
+                    <view class="chat-text">{{item.content}}</view>
+                    <view class="chat-time">{{item.timeText}}</view>
+                </view>
+            </view>
+        </scroll-view>
+
+        <view class="chat-input-bar">
+            <input class="chat-input" placeholder="请输入想问的问题" value="{{inputContent}}" bindinput="onInput" bindconfirm="sendMessage" confirm-type="send" maxlength="500" cursor-spacing="16"></input>
+            <button class="chat-send" bindtap="sendMessage">发送</button>
+        </view>
+    </block>
+</view>

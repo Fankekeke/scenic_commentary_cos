@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.ScenicMediaMapper">
+
+    <!-- 分页获取景点媒体资源 -->
+    <select id="getScenicMediaByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        sm.id,
+        sm.spot_id AS spotId,
+        sm.media_type AS mediaType,
+        sm.title,
+        sm.file_name AS fileName,
+        sm.file_url AS fileUrl,
+        sm.file_size AS fileSize,
+        sm.sort_no AS sortNo,
+        sm.status,
+        sm.created_at AS createdAt,
+        sm.updated_at AS updatedAt
+        FROM
+        scenic_media sm
+        WHERE 1 = 1
+        <if test="scenicMedia.spotId != null">
+            AND sm.spot_id = #{scenicMedia.spotId}
+        </if>
+        <if test="scenicMedia.mediaType != null">
+            AND sm.media_type = #{scenicMedia.mediaType}
+        </if>
+        <if test="scenicMedia.title != null and scenicMedia.title != ''">
+            AND sm.title LIKE CONCAT('%',#{scenicMedia.title},'%')
+        </if>
+        <if test="scenicMedia.status != null">
+            AND sm.status = #{scenicMedia.status}
+        </if>
+        ORDER BY sm.sort_no ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.StatisticsMapper">
+
+    <!-- 统计近七天每日新注册用户数 -->
+    <select id="countNewUserByDay" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT(DATE(su.created_at), '%Y-%m-%d') AS date,
+        COUNT(*) AS count
+        FROM
+        sys_user su
+        WHERE DATE(su.created_at) &gt;= DATE_SUB(CURDATE(), INTERVAL #{days} - 1 DAY)
+        GROUP BY DATE(su.created_at)
+        ORDER BY date
+    </select>
+
+    <!-- 统计近七天每日用户访问数（基于最后登录时间） -->
+    <select id="countUserVisitByDay" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT(DATE(su.last_login_at), '%Y-%m-%d') AS date,
+        COUNT(*) AS count
+        FROM
+        sys_user su
+        WHERE su.last_login_at IS NOT NULL
+        AND DATE(su.last_login_at) &gt;= DATE_SUB(CURDATE(), INTERVAL #{days} - 1 DAY)
+        GROUP BY DATE(su.last_login_at)
+        ORDER BY date
+    </select>
+
+    <!-- 统计各景点类型下的景点数量 -->
+    <select id="countScenicSpotByCategory" resultType="java.util.LinkedHashMap">
+        SELECT
+        sc.id AS categoryId,
+        sc.name AS name,
+        COUNT(ss.id) AS count
+        FROM
+        scenic_category sc
+        LEFT JOIN scenic_spot ss ON ss.category_id = sc.id AND ss.deleted = 0
+        GROUP BY sc.id, sc.name
+        UNION ALL
+        SELECT
+        0 AS categoryId,
+        '未分类' AS name,
+        COUNT(*) AS count
+        FROM
+        scenic_spot ss
+        WHERE ss.deleted = 0
+        AND (ss.category_id IS NULL OR ss.category_id NOT IN (SELECT id FROM scenic_category))
+        ORDER BY count DESC
+    </select>
+
+    <!-- 统计近七天每日景点预约数 -->
+    <select id="countReservationByDay" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT(DATE(sr.created_at), '%Y-%m-%d') AS date,
+        COUNT(*) AS count
+        FROM
+        scenic_reservation sr
+        WHERE DATE(sr.created_at) &gt;= DATE_SUB(CURDATE(), INTERVAL #{days} - 1 DAY)
+        GROUP BY DATE(sr.created_at)
+        ORDER BY date
+    </select>
+
+    <!-- 统计各景点的预约数量 -->
+    <select id="countReservationByScenicSpot" resultType="java.util.LinkedHashMap">
+        SELECT
+        ss.id AS spotId,
+        ss.name AS name,
+        COUNT(sr.id) AS count
+        FROM
+        scenic_spot ss
+        LEFT JOIN scenic_reservation sr ON sr.spot_id = ss.id
+        WHERE ss.deleted = 0
+        GROUP BY ss.id, ss.name
+        ORDER BY count DESC
+    </select>
+
+    <!-- 统计指定景点当天各时间段的入园人数（仅核销成功的记录） -->
+    <select id="countEntryByHour" resultType="java.util.LinkedHashMap">
+        SELECT
+        HOUR(rv.verified_at) AS hour,
+        SUM(rv.verified_count) AS count
+        FROM
+        reservation_verification rv
+        INNER JOIN scenic_reservation sr ON rv.reservation_id = sr.id
+        WHERE sr.spot_id = #{spotId}
+        AND rv.result = 1
+        AND DATE(rv.verified_at) = CURDATE()
+        GROUP BY HOUR(rv.verified_at)
+        ORDER BY hour
+    </select>
+
+</mapper>

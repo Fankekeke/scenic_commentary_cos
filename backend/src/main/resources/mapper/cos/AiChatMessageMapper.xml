@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.AiChatMessageMapper">
+
+    <!-- 分页获取AI客服消息 -->
+    <select id="getAiChatMessageByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        acm.id,
+        acm.session_id AS sessionId,
+        acm.role,
+        acm.content,
+        acm.created_at AS createdAt
+        FROM
+        ai_chat_message acm
+        WHERE 1 = 1
+        <if test="aiChatMessage.sessionId != null">
+            AND acm.session_id = #{aiChatMessage.sessionId}
+        </if>
+        <if test="aiChatMessage.role != null">
+            AND acm.role = #{aiChatMessage.role}
+        </if>
+        <if test="aiChatMessage.content != null and aiChatMessage.content != ''">
+            AND acm.content LIKE CONCAT('%',#{aiChatMessage.content},'%')
+        </if>
+        ORDER BY acm.created_at DESC
+    </select>
+
+    <!-- 获取所有对话过AI的用户会话：按会话分组，取最后一条消息与时间、消息总数 -->
+    <select id="getAiChatUsers" resultType="java.util.LinkedHashMap">
+        SELECT
+        t.session_id AS sessionId,
+        t.role AS lastRole,
+        t.content AS lastContent,
+        t.created_at AS lastTime,
+        m.cnt AS messageCount,
+        su.id AS userId,
+        su.nickname AS nickname,
+        su.mobile AS mobile,
+        su.avatar_url AS avatarUrl
+        FROM ai_chat_message t
+        INNER JOIN (
+        SELECT session_id, MAX(id) AS maxId, COUNT(*) AS cnt
+        FROM ai_chat_message
+        GROUP BY session_id
+        ) m ON t.session_id = m.session_id AND t.id = m.maxId
+        LEFT JOIN sys_user su ON t.session_id = su.id
+        ORDER BY lastTime DESC
+    </select>
+
+</mapper>

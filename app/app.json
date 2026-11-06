@@ -1,0 +1,67 @@
+{
+  "pages": [
+    "pages/home/index/index",
+    "pages/user/index/index",
+    "pages/auth/auth",
+    "pages/home/gscenic/index",
+    "pages/home/pscenic/index",
+    "pages/home/groom/index",
+    "pages/order/details/index",
+    "pages/order/index/index",
+    "pages/sorder/details/index",
+    "pages/sorder/index/index",
+    "pages/scar/sorder/index",
+    "pages/scar/order/index",
+    "pages/shop/chat/index",
+    "pages/coupon/index/index",
+    "pages/coupon/detail/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#39b54a",
+    "navigationBarTitleText": "shop",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#aaaaaa",
+    "borderStyle": "white",
+    "backgroundColor": "#fff",
+    "selectedColor": "#F95A5F",
+    "list": [
+      {
+        "pagePath": "pages/home/index/index",
+        "iconPath": "img/home.png",
+        "selectedIconPath": "img/home1.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/home/pscenic/index",
+        "iconPath": "img/message.png",
+        "selectedIconPath": "img/message1.png",
+        "text": "客服"
+      },
+      {
+        "pagePath": "pages/user/index/index",
+        "iconPath": "img/my.png",
+        "selectedIconPath": "img/my1.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "routePlan": {
+      "version": "1.0.18",
+      "provider": "wx50b5593e81dd937a"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "onLocationChange"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于地图定位与景区自动语音讲解"
+    }
+  }
+}

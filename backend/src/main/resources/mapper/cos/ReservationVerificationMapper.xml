@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.ReservationVerificationMapper">
+
+    <!-- 分页获取预约二维码核销记录 -->
+    <select id="getReservationVerificationByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        rv.id,
+        rv.reservation_id AS reservationId,
+        rv.verified_count AS verifiedCount,
+        rv.scanner_code AS scannerCode,
+        rv.result,
+        rv.failure_reason AS failureReason,
+        rv.verified_at AS verifiedAt
+        FROM
+        reservation_verification rv
+        WHERE 1 = 1
+        <if test="reservationVerification.reservationId != null">
+            AND rv.reservation_id = #{reservationVerification.reservationId}
+        </if>
+        <if test="reservationVerification.scannerCode != null and reservationVerification.scannerCode != ''">
+            AND rv.scanner_code LIKE CONCAT('%',#{reservationVerification.scannerCode},'%')
+        </if>
+        <if test="reservationVerification.result != null">
+            AND rv.result = #{reservationVerification.result}
+        </if>
+        ORDER BY rv.verified_at DESC
+    </select>
+
+</mapper>

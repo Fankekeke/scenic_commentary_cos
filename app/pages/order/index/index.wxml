@@ -1,0 +1,51 @@
+<!-- 状态栏区域 -->
+<view class="cu-custom" style="height:{{CustomBar}}px;">
+    <view class="cu-bar fixed none-bg text-white bg-img" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
+        <navigator class='action canui-head-title' open-type="navigateBack" hover-class="none">
+            <text class='icon-back'></text>
+            个人信息
+        </navigator>
+    </view>
+</view>
+
+<view class="profile-page" style="padding-top: {{CustomBar}}px;">
+    <view wx:if="{{!isLogin}}" class="login-tip">
+        <view class="login-tip-title">尚未登录</view>
+        <view class="login-tip-desc">登录后即可查看并维护个人信息</view>
+        <button class="cu-btn round bg-blue login-btn" bindtap="goLogin">去登录</button>
+    </view>
+
+    <block wx:else>
+        <view class="profile-header">
+            <image wx:if="{{form.avatarUrl}}" class="profile-avatar" src="{{form.avatarUrl}}" mode="aspectFill"></image>
+            <view wx:else class="profile-avatar profile-avatar-default">游</view>
+            <view class="profile-header-info">
+                <view class="profile-name">{{form.nickname || '未设置昵称'}}</view>
+                <view class="profile-id">用户 ID：{{form.id}}</view>
+            </view>
+        </view>
+
+        <view class="profile-card">
+            <view class="profile-card-title">基本资料</view>
+            <view class="cu-form-group">
+                <view class="title">昵称</view>
+                <input placeholder="请输入昵称" value="{{form.nickname}}" data-field="nickname" bindinput="onInput" maxlength="30"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">手机号</view>
+                <input type="number" placeholder="请输入手机号" value="{{form.mobile}}" data-field="mobile" bindinput="onInput" maxlength="11"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">真实姓名</view>
+                <input placeholder="请输入真实姓名" value="{{form.realName}}" data-field="realName" bindinput="onInput" maxlength="20"></input>
+            </view>
+            <view class="cu-form-group">
+                <view class="title">身份证号</view>
+                <input type="idcard" placeholder="请输入身份证号" value="{{form.idCard}}" data-field="idCard" bindinput="onInput" maxlength="18"></input>
+            </view>
+        </view>
+
+        <view class="profile-hint">仅支持修改昵称、手机号、真实姓名与身份证号</view>
+        <button class="profile-save" bindtap="save">保存修改</button>
+    </block>
+</view>

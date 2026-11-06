@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.SysUserMapper">
+
+    <!-- 分页获取小程序用户 -->
+    <select id="getSysUserByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        su.id,
+        su.openid,
+        su.unionid,
+        su.mobile,
+        su.nickname,
+        su.real_name AS realName,
+        su.id_card AS idCard,
+        su.avatar_url AS avatarUrl,
+        su.status,
+        su.last_login_at AS lastLoginAt,
+        su.created_at AS createdAt,
+        su.updated_at AS updatedAt
+        FROM
+        sys_user su
+        WHERE 1 = 1
+        <if test="sysUser.nickname != null and sysUser.nickname != ''">
+            AND su.nickname LIKE CONCAT('%',#{sysUser.nickname},'%')
+        </if>
+        <if test="sysUser.mobile != null and sysUser.mobile != ''">
+            AND su.mobile LIKE CONCAT('%',#{sysUser.mobile},'%')
+        </if>
+        <if test="sysUser.status != null">
+            AND su.status = #{sysUser.status}
+        </if>
+        ORDER BY su.created_at DESC
+    </select>
+
+</mapper>

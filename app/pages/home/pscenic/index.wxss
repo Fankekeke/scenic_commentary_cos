@@ -1,0 +1,127 @@
+page {
+    height: 100vh;
+    background: #f4f7fb;
+    padding: 0;
+}
+.cu-custom {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+.cu-custom .cu-bar {
+    padding-right: inherit;
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+}
+.chat-page {
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+.chat-scroll {
+    flex: 1;
+    height: 0;
+    box-sizing: border-box;
+    padding: 24rpx;
+}
+.chat-empty {
+    padding-top: 120rpx;
+    text-align: center;
+    font-size: 26rpx;
+    color: #9aa7b5;
+}
+.chat-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 28rpx;
+}
+.chat-row-mine {
+    flex-direction: row-reverse;
+}
+.chat-avatar {
+    width: 72rpx;
+    height: 72rpx;
+    flex-shrink: 0;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 72rpx;
+    font-size: 24rpx;
+    color: #fff;
+    background: #1cbbb4;
+}
+.chat-row-mine .chat-avatar {
+    background: #0081ff;
+}
+.chat-bubble {
+    max-width: 72%;
+    margin: 0 20rpx;
+    padding: 20rpx 24rpx;
+    border-radius: 18rpx;
+    background: #fff;
+    box-shadow: 0 6rpx 24rpx rgba(31, 45, 61, 0.06);
+}
+.chat-row-mine .chat-bubble {
+    background: #d6ecff;
+}
+.chat-text {
+    font-size: 28rpx;
+    color: #1f2d3d;
+    line-height: 1.6;
+    word-break: break-all;
+}
+.chat-time {
+    margin-top: 10rpx;
+    font-size: 20rpx;
+    color: #9aa7b5;
+    text-align: right;
+}
+.chat-input-bar {
+    display: flex;
+    align-items: center;
+    padding: 16rpx 24rpx;
+    background: #fff;
+    border-top: 1rpx solid #eef1f5;
+}
+.chat-input {
+    flex: 1;
+    min-width: 0;
+    height: 72rpx;
+    padding: 0 24rpx;
+    border-radius: 36rpx;
+    background: #f4f7fb;
+    font-size: 28rpx;
+    color: #1f2d3d;
+}
+.chat-send {
+    margin-left: 16rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+    padding: 0 32rpx;
+    border-radius: 36rpx;
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+    color: #fff;
+    font-size: 26rpx;
+    border: none;
+}
+.chat-send::after {
+    border: none;
+}
+.chat-login {
+    margin-top: 160rpx;
+    text-align: center;
+}
+.chat-login-title {
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #1f2d3d;
+}
+.chat-login-desc {
+    margin-top: 16rpx;
+    font-size: 26rpx;
+    color: #8a97a8;
+}
+.chat-login-btn {
+    margin-top: 48rpx;
+    padding: 0 80rpx;
+}

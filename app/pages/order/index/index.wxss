@@ -1,0 +1,121 @@
+page {
+    background: #f4f7fb;
+    padding: 0;
+}
+.cu-custom {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+.cu-custom .cu-bar {
+    padding-right: inherit;
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+}
+.profile-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-left: 24rpx;
+    padding-right: 24rpx;
+    padding-bottom: 60rpx;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-top: 24rpx;
+    padding: 36rpx 30rpx;
+    background: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 6rpx 24rpx rgba(31, 45, 61, 0.06);
+}
+.profile-avatar {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+    background: #eef2f7;
+    flex-shrink: 0;
+}
+.profile-avatar-default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0081ff;
+    font-size: 44rpx;
+}
+.profile-header-info {
+    margin-left: 28rpx;
+}
+.profile-name {
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #1f2d3d;
+}
+.profile-id {
+    margin-top: 10rpx;
+    font-size: 22rpx;
+    color: #9aa7b5;
+}
+.profile-card {
+    margin-top: 24rpx;
+    padding: 10rpx 30rpx 20rpx;
+    background: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 6rpx 24rpx rgba(31, 45, 61, 0.06);
+}
+.profile-card-title {
+    padding: 24rpx 0 8rpx;
+    font-size: 26rpx;
+    color: #8a97a8;
+}
+.cu-form-group {
+    padding: 24rpx 0;
+    border-bottom: 1rpx solid #eef1f5;
+}
+.cu-form-group .title {
+    width: 180rpx;
+    flex-shrink: 0;
+    font-size: 28rpx;
+    color: #414d5e;
+}
+.cu-form-group input {
+    flex: 1;
+    text-align: right;
+    font-size: 28rpx;
+    color: #1f2d3d;
+}
+.profile-hint {
+    margin: 24rpx 8rpx;
+    font-size: 22rpx;
+    color: #9aa7b5;
+}
+.profile-save {
+    margin-top: 20rpx;
+    height: 88rpx;
+    line-height: 88rpx;
+    border-radius: 44rpx;
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+    color: #fff;
+    font-size: 30rpx;
+    border: none;
+}
+.profile-save::after {
+    border: none;
+}
+.login-tip {
+    margin-top: 160rpx;
+    text-align: center;
+}
+.login-tip-title {
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #1f2d3d;
+}
+.login-tip-desc {
+    margin-top: 16rpx;
+    font-size: 26rpx;
+    color: #8a97a8;
+}
+.login-btn {
+    margin-top: 48rpx;
+    padding: 0 80rpx;
+}

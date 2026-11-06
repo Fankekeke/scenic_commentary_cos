@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.ScenicReservationMapper">
+
+    <!-- 分页获取景点预约订单 -->
+    <select id="getScenicReservationByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        sr.id,
+        sr.reservation_no AS reservationNo,
+        sr.user_id AS userId,
+        sr.spot_id AS spotId,
+        sr.visit_date AS visitDate,
+        sr.visit_time_slot AS visitTimeSlot,
+        sr.visitor_count AS visitorCount,
+        sr.contact_name AS contactName,
+        sr.contact_mobile AS contactMobile,
+        sr.status,
+        sr.qr_token_hash AS qrTokenHash,
+        sr.qr_expires_at AS qrExpiresAt,
+        sr.verified_count AS verifiedCount,
+        sr.remark,
+        sr.created_at AS createdAt,
+        sr.updated_at AS updatedAt,
+        ss.name AS spotName,
+        ss.address AS spotAddress,
+        ss.opening_hours AS spotOpeningHours,
+        ss.images AS spotImages,
+        ss.status AS spotStatus,
+        sc.id AS categoryId,
+        sc.name AS categoryName,
+        sc.code AS categoryCode,
+        sc.icon_url AS categoryIconUrl
+        FROM
+        scenic_reservation sr
+        LEFT JOIN scenic_spot ss ON sr.spot_id = ss.id
+        LEFT JOIN scenic_category sc ON ss.category_id = sc.id
+        WHERE 1 = 1
+        <if test="scenicReservation.reservationNo != null and scenicReservation.reservationNo != ''">
+            AND sr.reservation_no LIKE CONCAT('%',#{scenicReservation.reservationNo},'%')
+        </if>
+        <if test="scenicReservation.userId != null">
+            AND sr.user_id = #{scenicReservation.userId}
+        </if>
+        <if test="scenicReservation.spotId != null">
+            AND sr.spot_id = #{scenicReservation.spotId}
+        </if>
+        <if test="scenicReservation.contactName != null and scenicReservation.contactName != ''">
+            AND sr.contact_name LIKE CONCAT('%',#{scenicReservation.contactName},'%')
+        </if>
+        <if test="scenicReservation.contactMobile != null and scenicReservation.contactMobile != ''">
+            AND sr.contact_mobile LIKE CONCAT('%',#{scenicReservation.contactMobile},'%')
+        </if>
+        <if test="scenicReservation.status != null">
+            AND sr.status = #{scenicReservation.status}
+        </if>
+        ORDER BY sr.created_at DESC
+    </select>
+
+    <!-- 根据用户ID获取景点预约订单：不分页，返回字段与分页一致 -->
+    <select id="getScenicReservationByUserId" resultType="java.util.LinkedHashMap">
+        SELECT
+        sr.id,
+        sr.reservation_no AS reservationNo,
+        sr.user_id AS userId,
+        sr.spot_id AS spotId,
+        sr.visit_date AS visitDate,
+        sr.visit_time_slot AS visitTimeSlot,
+        sr.visitor_count AS visitorCount,
+        sr.contact_name AS contactName,
+        sr.contact_mobile AS contactMobile,
+        sr.status,
+        sr.qr_token_hash AS qrTokenHash,
+        sr.qr_expires_at AS qrExpiresAt,
+        sr.verified_count AS verifiedCount,
+        sr.remark,
+        sr.created_at AS createdAt,
+        sr.updated_at AS updatedAt,
+        ss.name AS spotName,
+        ss.address AS spotAddress,
+        ss.opening_hours AS spotOpeningHours,
+        ss.images AS spotImages,
+        ss.status AS spotStatus,
+        sc.id AS categoryId,
+        sc.name AS categoryName,
+        sc.code AS categoryCode,
+        sc.icon_url AS categoryIconUrl
+        FROM
+        scenic_reservation sr
+        LEFT JOIN scenic_spot ss ON sr.spot_id = ss.id
+        LEFT JOIN scenic_category sc ON ss.category_id = sc.id
+        WHERE sr.user_id = #{userId}
+        ORDER BY sr.created_at DESC
+    </select>
+
+    <!-- 预约订单详情：关联景点、分类、用户 -->
+    <select id="getReservationDetail" resultType="java.util.LinkedHashMap">
+        SELECT
+        sr.id,
+        sr.reservation_no AS reservationNo,
+        sr.user_id AS userId,
+        sr.spot_id AS spotId,
+        sr.visit_date AS visitDate,
+        sr.visit_time_slot AS visitTimeSlot,
+        sr.visitor_count AS visitorCount,
+        sr.contact_name AS contactName,
+        sr.contact_mobile AS contactMobile,
+        sr.status,
+        sr.qr_token_hash AS qrTokenHash,
+        sr.qr_expires_at AS qrExpiresAt,
+        sr.verified_count AS verifiedCount,
+        sr.remark,
+        sr.created_at AS createdAt,
+        sr.updated_at AS updatedAt,
+        ss.id AS spotId2,
+        ss.name AS spotName,
+        ss.brief AS spotBrief,
+        ss.description AS spotDescription,
+        ss.address AS spotAddress,
+        ss.longitude AS spotLongitude,
+        ss.latitude AS spotLatitude,
+        ss.images AS spotImages,
+        ss.opening_hours AS spotOpeningHours,
+        ss.status AS spotStatus,
+        sc.id AS categoryId,
+        sc.name AS categoryName,
+        sc.code AS categoryCode,
+        sc.icon_url AS categoryIconUrl,
+        su.id AS userId2,
+        su.nickname AS nickname,
+        su.mobile AS userMobile,
+        su.avatar_url AS avatarUrl,
+        su.openid AS openid,
+        su.unionid AS unionid,
+        su.status AS userStatus
+        FROM
+        scenic_reservation sr
+        LEFT JOIN scenic_spot ss ON sr.spot_id = ss.id
+        LEFT JOIN scenic_category sc ON ss.category_id = sc.id
+        LEFT JOIN sys_user su ON sr.user_id = su.id
+        WHERE sr.id = #{id}
+    </select>
+
+</mapper>

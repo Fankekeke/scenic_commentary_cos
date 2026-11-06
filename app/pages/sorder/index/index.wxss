@@ -1,0 +1,182 @@
+page {
+    background: #f4f7fb;
+    padding: 0;
+}
+.cu-custom {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+.cu-custom .cu-bar {
+    padding-right: inherit;
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+}
+.order-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-left: 24rpx;
+    padding-right: 24rpx;
+    padding-bottom: 60rpx;
+}
+.status-tabs {
+    white-space: nowrap;
+    width: 100%;
+    margin: 24rpx 0;
+}
+.status-tab {
+    display: inline-block;
+    padding: 12rpx 32rpx;
+    margin-right: 16rpx;
+    border-radius: 32rpx;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 4rpx 18rpx rgba(31, 45, 61, 0.08);
+    font-size: 26rpx;
+    color: #5b6879;
+}
+.status-tab.active {
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+    color: #fff;
+}
+.order-empty {
+    padding-top: 120rpx;
+    text-align: center;
+    font-size: 26rpx;
+    color: #9aa7b5;
+}
+.order-card {
+    margin-bottom: 24rpx;
+    padding: 28rpx;
+    border-radius: 20rpx;
+    background: #fff;
+    box-shadow: 0 6rpx 24rpx rgba(31, 45, 61, 0.06);
+}
+.order-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20rpx;
+    border-bottom: 1rpx solid #eef1f5;
+}
+.order-spot-name {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #1f2d3d;
+}
+.order-status {
+    padding: 6rpx 18rpx;
+    border-radius: 100rpx;
+    font-size: 22rpx;
+}
+.status-pending {
+    background: rgba(0, 129, 255, 0.1);
+    color: #0081ff;
+}
+.status-partial {
+    background: rgba(255, 154, 68, 0.14);
+    color: #e8892b;
+}
+.status-used {
+    background: rgba(28, 187, 180, 0.14);
+    color: #12a89d;
+}
+.status-canceled,
+.status-expired {
+    background: #f0f3f8;
+    color: #8a97a8;
+}
+.order-spot {
+    display: flex;
+    align-items: center;
+    margin-top: 24rpx;
+}
+.order-cover {
+    width: 160rpx;
+    height: 140rpx;
+    flex-shrink: 0;
+    border-radius: 12rpx;
+    background: #eef2f7;
+}
+.order-cover-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26rpx;
+    color: #9aa7b5;
+}
+.order-spot-info {
+    margin-left: 24rpx;
+    min-width: 0;
+}
+.order-address {
+    font-size: 26rpx;
+    color: #414d5e;
+    line-height: 1.5;
+}
+.order-hours,
+.order-category {
+    margin-top: 8rpx;
+    font-size: 22rpx;
+    color: #8a97a8;
+}
+.order-detail {
+    margin-top: 20rpx;
+    padding-top: 16rpx;
+    border-top: 1rpx solid #eef1f5;
+}
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    color: #8a97a8;
+}
+.order-row text:last-child {
+    color: #414d5e;
+    text-align: right;
+    margin-left: 20rpx;
+}
+.order-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20rpx;
+    padding-top: 20rpx;
+    border-top: 1rpx solid #eef1f5;
+}
+.order-time {
+    font-size: 22rpx;
+    color: #9aa7b5;
+}
+.order-cancel {
+    margin: 0;
+    height: 60rpx;
+    line-height: 60rpx;
+    padding: 0 32rpx;
+    border-radius: 30rpx;
+    background: #fff;
+    border: 1rpx solid #e54d42;
+    color: #e54d42;
+    font-size: 24rpx;
+}
+.order-cancel::after {
+    border: none;
+}
+.login-tip {
+    margin-top: 160rpx;
+    text-align: center;
+}
+.login-tip-title {
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #1f2d3d;
+}
+.login-tip-desc {
+    margin-top: 16rpx;
+    font-size: 26rpx;
+    color: #8a97a8;
+}
+.login-btn {
+    margin-top: 48rpx;
+    padding: 0 80rpx;
+}

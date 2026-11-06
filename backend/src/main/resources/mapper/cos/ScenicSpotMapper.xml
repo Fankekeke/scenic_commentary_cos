@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.ScenicSpotMapper">
+
+    <!-- 分页获取景点信息 -->
+    <select id="getScenicSpotByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        ss.id,
+        ss.category_id AS categoryId,
+        ss.name,
+        ss.brief,
+        ss.address,
+        ss.longitude,
+        ss.latitude,
+        ss.images,
+        ss.map_icon_url AS mapIconUrl,
+        ss.cover_media_id AS coverMediaId,
+        ss.trigger_radius_m AS triggerRadiusM,
+        ss.trigger_enabled AS triggerEnabled,
+        ss.audio_media_id AS audioMediaId,
+        ss.audio_media_url AS audioMediaUrl,
+        ss.opening_hours AS openingHours,
+        ss.sort_no AS sortNo,
+        ss.status,
+        ss.created_at AS createdAt,
+        ss.updated_at AS updatedAt,
+        sc.name AS categoryName
+        FROM
+        scenic_spot ss
+        LEFT JOIN scenic_category sc ON ss.category_id = sc.id
+        WHERE 1 = 1
+        <if test="scenicSpot.name != null and scenicSpot.name != ''">
+            AND ss.name LIKE CONCAT('%',#{scenicSpot.name},'%')
+        </if>
+        <if test="scenicSpot.categoryId != null">
+            AND ss.category_id = #{scenicSpot.categoryId}
+        </if>
+        <if test="scenicSpot.status != null">
+            AND ss.status = #{scenicSpot.status}
+        </if>
+        <if test="scenicSpot.deleted != null">
+            AND ss.deleted = #{scenicSpot.deleted}
+        </if>
+        ORDER BY ss.sort_no ASC
+    </select>
+
+    <!-- 获取所有景点信息（不分页，返回字段与分页一致） -->
+    <select id="getAllScenicSpot" resultType="java.util.LinkedHashMap">
+        SELECT
+        ss.id,
+        ss.category_id AS categoryId,
+        ss.name,
+        ss.brief,
+        ss.address,
+        ss.longitude,
+        ss.latitude,
+        ss.images,
+        ss.map_icon_url AS mapIconUrl,
+        ss.cover_media_id AS coverMediaId,
+        ss.trigger_radius_m AS triggerRadiusM,
+        ss.trigger_enabled AS triggerEnabled,
+        ss.audio_media_id AS audioMediaId,
+        ss.audio_media_url AS audioMediaUrl,
+        ss.opening_hours AS openingHours,
+        ss.sort_no AS sortNo,
+        ss.status,
+        ss.created_at AS createdAt,
+        ss.updated_at AS updatedAt,
+        sc.name AS categoryName
+        FROM
+        scenic_spot ss
+        LEFT JOIN scenic_category sc ON ss.category_id = sc.id
+        WHERE 1 = 1
+        <if test="scenicSpot.name != null and scenicSpot.name != ''">
+            AND ss.name LIKE CONCAT('%',#{scenicSpot.name},'%')
+        </if>
+        <if test="scenicSpot.categoryId != null">
+            AND ss.category_id = #{scenicSpot.categoryId}
+        </if>
+        <if test="scenicSpot.status != null">
+            AND ss.status = #{scenicSpot.status}
+        </if>
+        <if test="scenicSpot.deleted != null">
+            AND ss.deleted = #{scenicSpot.deleted}
+        </if>
+        ORDER BY ss.sort_no ASC
+    </select>
+
+    <!-- 获取附近景点：返回所有已上架未删除的景点，距离计算与半径过滤在服务层完成 -->
+    <select id="getNearbyScenicSpot" resultType="java.util.LinkedHashMap">
+        SELECT
+        ss.id,
+        ss.category_id AS categoryId,
+        ss.name,
+        ss.brief,
+        ss.address,
+        ss.longitude,
+        ss.latitude,
+        ss.images,
+        ss.map_icon_url AS mapIconUrl,
+        ss.cover_media_id AS coverMediaId,
+        ss.trigger_radius_m AS triggerRadiusM,
+        ss.trigger_enabled AS triggerEnabled,
+        ss.audio_media_id AS audioMediaId,
+        ss.audio_media_url AS audioMediaUrl,
+        ss.opening_hours AS openingHours,
+        ss.sort_no AS sortNo,
+        ss.status,
+        ss.created_at AS createdAt,
+        ss.updated_at AS updatedAt
+        FROM
+        scenic_spot ss
+        WHERE ss.status = 1
+        AND ss.deleted = 0
+        ORDER BY ss.sort_no ASC
+    </select>
+
+    <!-- 获取景区自动讲解音频：关联音频媒体，只返回启用自动讲解且配置了音频的景点 -->
+    <select id="getAutoGuideAudio" resultType="java.util.LinkedHashMap">
+        SELECT
+            ss.id,
+            ss.NAME,
+            ss.brief,
+            ss.address,
+            ss.longitude,
+            ss.latitude,
+            ss.trigger_radius_m AS triggerRadiusM,
+            ss.opening_hours AS openingHours,
+            ss.audio_media_id AS audioMediaId,
+            ss.audio_media_url AS audioMediaUrl
+        FROM
+            scenic_spot ss
+        WHERE
+            ss.STATUS = 1
+          AND ss.deleted = 0
+          AND ss.trigger_enabled = 1
+          AND ss.audio_media_url IS NOT NULL
+        ORDER BY
+            ss.sort_no ASC
+    </select>
+
+    <!-- 获取所有上架中的景区信息 -->
+    <select id="getOnShelfScenicSpot" resultType="java.util.LinkedHashMap">
+        SELECT
+        ss.id,
+        ss.category_id AS categoryId,
+        ss.name,
+        ss.brief,
+        ss.address,
+        ss.longitude,
+        ss.latitude,
+        ss.images,
+        ss.map_icon_url AS mapIconUrl,
+        ss.cover_media_id AS coverMediaId,
+        ss.trigger_radius_m AS triggerRadiusM,
+        ss.trigger_enabled AS triggerEnabled,
+        ss.audio_media_id AS audioMediaId,
+        ss.audio_media_url AS audioMediaUrl,
+        ss.opening_hours AS openingHours,
+        ss.sort_no AS sortNo,
+        ss.status,
+        ss.created_at AS createdAt,
+        ss.updated_at AS updatedAt
+        FROM
+        scenic_spot ss
+        WHERE ss.status = 1
+        AND ss.deleted = 0
+        ORDER BY ss.sort_no ASC
+    </select>
+
+</mapper>

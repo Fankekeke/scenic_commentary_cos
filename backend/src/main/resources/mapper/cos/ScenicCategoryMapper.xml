@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.ScenicCategoryMapper">
+
+    <!-- 分页获取点位分类 -->
+    <select id="getScenicCategoryByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        sc.id,
+        sc.name,
+        sc.code,
+        sc.icon_url AS iconUrl,
+        sc.sort_no AS sortNo,
+        sc.status,
+        sc.description,
+        sc.created_at AS createdAt,
+        sc.updated_at AS updatedAt
+        FROM
+        scenic_category sc
+        WHERE 1 = 1
+        <if test="scenicCategory.name != null and scenicCategory.name != ''">
+            AND sc.name LIKE CONCAT('%',#{scenicCategory.name},'%')
+        </if>
+        <if test="scenicCategory.code != null and scenicCategory.code != ''">
+            AND sc.code LIKE CONCAT('%',#{scenicCategory.code},'%')
+        </if>
+        <if test="scenicCategory.status != null">
+            AND sc.status = #{scenicCategory.status}
+        </if>
+        ORDER BY sc.sort_no ASC
+    </select>
+
+</mapper>

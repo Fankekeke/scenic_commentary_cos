@@ -1,0 +1,121 @@
+<map id="scenicMap" class="scenic-map"
+     latitude="{{latitude}}"
+     longitude="{{longitude}}"
+     scale="{{scale}}"
+     markers="{{markers}}"
+     include-points="{{includePoints}}"
+     polyline="{{polyline}}"
+     show-location
+     bindmarkertap="onMarkerTap"
+     bindtap="onMapTap">
+</map>
+
+<view class="map-overlay-top" style="padding-top: {{StatusBar}}px;">
+    <scroll-view class="category-bar" scroll-x>
+        <view class="category-item {{activeCategory === 0 ? 'active' : ''}}" bindtap="onCategoryTap" data-id="0">全部</view>
+        <view wx:for="{{categoryList}}" wx:key="id" class="category-item {{activeCategory === item.id ? 'active' : ''}}" bindtap="onCategoryTap" data-id="{{item.id}}">
+            <image wx:if="{{item.hasIcon}}" class="category-icon" src="{{item.iconPath}}" mode="aspectFit"></image>
+            <text>{{item.name}}</text>
+        </view>
+    </scroll-view>
+</view>
+
+<view wx:if="{{loading}}" class="map-tip">正在加载景点...</view>
+<view wx:elif="{{spotCount === 0}}" class="map-tip">暂无上架景点</view>
+
+<view wx:if="{{locationText}}" class="location-info" style="bottom: {{routeSpots.length ? 410 : 132}}rpx;" bindtap="clearSimulatedLocation">
+    <view>当前位置 {{locationText}}</view>
+    <view class="location-hint">{{isSimulated ? '模拟位置 · 点击恢复 GPS 定位' : '点击地图可模拟当前位置'}}</view>
+</view>
+
+<view wx:if="{{autoAudio}}" class="auto-audio" style="top: {{StatusBar + 56}}px;">
+    <view class="auto-audio-info">
+        <view class="auto-audio-title">{{autoAudio.title}}</view>
+        <view class="auto-audio-sub">{{autoPlaying ? '正在自动播放讲解' : '讲解已结束'}} · 距景点约 {{autoAudio.distance}} 米</view>
+    </view>
+    <view class="auto-audio-stop" catchtap="stopAutoAudio">{{autoPlaying ? '停止' : '关闭'}}</view>
+</view>
+
+<view wx:if="{{!selectedSpot}}" class="map-tools" style="bottom: {{routeSpots.length ? 320 : 40}}rpx;">
+    <view class="map-tool" bindtap="moveToCurrent">
+        <text class="icon-locationfill"></text>定位
+    </view>
+    <view class="map-tool" bindtap="resetView">全览</view>
+</view>
+
+<view wx:if="{{!selectedSpot && routeSpots.length}}" class="route-bar">
+    <view class="route-bar-head">
+        <text class="route-bar-title">已选 {{routeSpots.length}} 个景点</text>
+        <text class="route-clear" catchtap="clearRoute">清空</text>
+    </view>
+    <scroll-view scroll-x class="route-chips">
+        <view class="route-chip" wx:for="{{routeSpots}}" wx:key="id">
+            <text>{{index + 1}}. {{item.name}}</text>
+            <text class="route-chip-remove" catchtap="removeRouteSpot" data-id="{{item.id}}">×</text>
+        </view>
+    </scroll-view>
+    <view wx:if="{{routeInfo}}" class="route-summary">
+        <view>最短路线：{{routeInfo.orderText}}</view>
+        <view>{{routeInfo.distanceText}} · {{routeInfo.durationText}}{{routeInfo.estimated ? ' · 直线估算' : ''}}</view>
+    </view>
+    <button class="route-start" bindtap="startRoutePlan">一键导航</button>
+</view>
+
+<view wx:if="{{selectedSpot}}" class="spot-panel">
+    <view class="spot-close" bindtap="closeDetail">×</view>
+    <image wx:if="{{selectedSpot.cover}}" class="spot-cover" src="{{selectedSpot.cover}}" mode="aspectFill"></image>
+    <view class="spot-body">
+        <view class="spot-head">
+            <text class="spot-name">{{selectedSpot.name}}</text>
+            <text class="spot-tag">{{selectedSpot.categoryName}}</text>
+        </view>
+        <view class="spot-brief">{{selectedSpot.brief || '暂无介绍'}}</view>
+        <view class="spot-line">{{selectedSpot.address || '暂无地址'}}</view>
+        <view class="spot-line">开放时间：{{selectedSpot.openingHours || '暂无'}}</view>
+        <view class="spot-actions">
+            <button wx:if="{{selectedSpot.audioUrl}}" class="spot-action spot-audio" bindtap="toggleAudio">{{isPlaying ? '暂停讲解' : '播放讲解'}}</button>
+            <button class="spot-action spot-nav" bindtap="navigateToSpot">导航前往</button>
+            <button wx:if="{{selectedSpot.canReserve}}" class="spot-action spot-reserve" bindtap="openReservation">立即预约</button>
+        </view>
+        <view class="route-hint" bindtap="toggleCurrentRouteSpot">
+            {{selectedSpot.inRoute ? '已加入路径 · 点击移出' : '点击加入路径'}}
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{showReservation}}" class="reserve-mask" bindtap="closeReservation"></view>
+<view wx:if="{{showReservation}}" class="reserve-sheet">
+    <view class="reserve-title">预约 · {{selectedSpot.name}}</view>
+    <picker mode="date" start="{{today}}" value="{{reservation.visitDate}}" bindchange="onDateChange">
+        <view class="reserve-field">
+            <text>游览日期</text>
+            <text class="reserve-value">{{reservation.visitDate}}</text>
+        </view>
+    </picker>
+    <picker mode="selector" range="{{timeSlots}}" value="{{timeSlotIndex}}" bindchange="onSlotChange">
+        <view class="reserve-field">
+            <text>预约时段</text>
+            <text class="reserve-value">{{reservation.visitTimeSlot}}</text>
+        </view>
+    </picker>
+    <view class="reserve-field">
+        <text>预约人数</text>
+        <input type="number" value="{{reservation.visitorCount}}" data-field="visitorCount" bindinput="onReserveInput"></input>
+    </view>
+    <view class="reserve-field">
+        <text>联系人</text>
+        <input placeholder="请输入姓名" value="{{reservation.contactName}}" data-field="contactName" bindinput="onReserveInput"></input>
+    </view>
+    <view class="reserve-field">
+        <text>手机号</text>
+        <input type="number" placeholder="请输入手机号" value="{{reservation.contactMobile}}" data-field="contactMobile" bindinput="onReserveInput"></input>
+    </view>
+    <view class="reserve-field">
+        <text>备注</text>
+        <input placeholder="选填" value="{{reservation.remark}}" data-field="remark" bindinput="onReserveInput"></input>
+    </view>
+    <view class="reserve-actions">
+        <button class="reserve-cancel" bindtap="closeReservation">取消</button>
+        <button class="reserve-submit" bindtap="submitReservation">确认预约</button>
+    </view>
+</view>
